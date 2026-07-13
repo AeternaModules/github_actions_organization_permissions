@@ -27,15 +27,21 @@ EOT
       repository_ids = set(number)
     }))
   }))
-  # --- Unconfirmed validation candidates, derived from github_actions_organization_permissions's provider source ---
-  # Not auto-enabled: either a bespoke provider validator we can't safely translate,
-  # or a path that crosses a list-typed block (needs its own for_each wrapping).
-  # Review, translate into a real validation{} block above, and delete once confirmed.
-  # path: allowed_actions
-  #   condition: contains(["all", "local_only", "selected"], value)
-  #   message:   must be one of: all, local_only, selected
-  # path: enabled_repositories
-  #   condition: contains(["all", "none", "selected"], value)
-  #   message:   must be one of: all, none, selected
+  validation {
+    condition = alltrue([
+      for k, v in var.actions_organization_permissionses : (
+        v.allowed_actions == null || (contains(["all", "local_only", "selected"], v.allowed_actions))
+      )
+    ])
+    error_message = "must be one of: all, local_only, selected"
+  }
+  validation {
+    condition = alltrue([
+      for k, v in var.actions_organization_permissionses : (
+        contains(["all", "none", "selected"], v.enabled_repositories)
+      )
+    ])
+    error_message = "must be one of: all, none, selected"
+  }
 }
 
