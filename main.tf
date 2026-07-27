@@ -1,5 +1,5 @@
-resource "github_actions_organization_permissions" "actions_organization_permissionses" {
-  for_each = var.actions_organization_permissionses
+resource "github_actions_organization_permissions" "actions_organization_permissions" {
+  for_each = var.actions_organization_permissions
 
   enabled_repositories = each.value.enabled_repositories
   allowed_actions      = each.value.allowed_actions

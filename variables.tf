@@ -1,6 +1,6 @@
-variable "actions_organization_permissionses" {
+variable "actions_organization_permissions" {
   description = <<EOT
-Map of actions_organization_permissionses, attributes below
+Map of actions_organization_permissions, attributes below
 Required:
     - enabled_repositories
 Optional:
@@ -29,7 +29,7 @@ EOT
   }))
   validation {
     condition = alltrue([
-      for k, v in var.actions_organization_permissionses : (
+      for k, v in var.actions_organization_permissions : (
         v.allowed_actions == null || (contains(["all", "local_only", "selected"], v.allowed_actions))
       )
     ])
@@ -37,7 +37,7 @@ EOT
   }
   validation {
     condition = alltrue([
-      for k, v in var.actions_organization_permissionses : (
+      for k, v in var.actions_organization_permissions : (
         contains(["all", "none", "selected"], v.enabled_repositories)
       )
     ])
